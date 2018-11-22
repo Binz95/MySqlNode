@@ -1,12 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var Heroes=require('../modals/heroes.js');
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'My Application' });
 });
-
 router.get('/saveData', function(req, res, next) {
 	Heroes.saveNew(req.query)
 	.then(function(){
@@ -35,5 +33,4 @@ router.get('/viewRow', function(req, res, next) {
 	})
 	.catch( console.log('ERR :: in resolving the promice'))
 });
-
 module.exports = router;

@@ -96,5 +96,4 @@ Heroes.viewRow = function(newHeroData){
    });
   });  
 }  
-
 module.exports = Heroes;
