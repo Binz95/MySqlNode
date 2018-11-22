@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+	each val in data
+		.row
+			.col.s12
+				.card.blue-grey.z-depth-5
+					.card-content.sans-serif
+						.card-title.teal
+							h3 #{val.id}
+							h4 #{val.superhero}
+							ul#nav-mobile.right.hide-on-med-and-down
+								a.navbar-brand(href='./getAllHeroes').btn Back
+							p Real Name : #{val.alter_ego}
+							p publisher : #{val.publisher}
+							p first_appearance : #{val.first_app}
+							p characters : #{val.characters}
+							p is_valid : #{val.is_valid}
+							p update_time : #{val.update_time}
+		
+					

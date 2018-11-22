@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  p Welcome to #{title} 
+   form(action='saveData' method='get')
+      .row
+          .input-field.col.s6
+           label(for='superhero') Super Hero Name
+           input#first_name.validate(type='text',name='superhero')
+      .row
+          .input-field.col.s6
+           label(for='publisher') Publisher
+           input#first_name.validate(type='text',name='publisher')
+      .row
+          .input-field.col.s6
+           label(for='alter_ego') Alter Ego
+           input#first_name.validate(type='text',name='alter_ego')
+      .row
+          .input-field.col.s6
+           label(for='first_app') First Appearence
+           input#first_name.validate(type='text',name='first_app')
+      .row
+          .input-field.col.s6
+           label(for='characters') Characters
+           input#first_name.validate(type='text',name='characters')
+      .row
+          .input-field.col.s6
+           label(for='is_valid') Is_Valid
+           input#first_name.validate(type='text',name='is_valid')
+      .row
+          .input-field.col.s6
+           label(for='update_time') Update Time
+           input#first_name.validate(type='text',name='update_time')
+      .row
+          button.btn(type='submit') Go

@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css')
+    nav.navbar.navbar-inverse
+     .container-fluid
+      .navbar-header
+     h3= title
+       ul#nav-mobile.right.hide-on-med-and-down
+        li
+         a.navbar-brand(href='/').btn Home
+         a.navbar-brand(href='./getAllHeroes').btn View
+
+  body
+    block content
