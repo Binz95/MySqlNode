@@ -1,99 +1,127 @@
 var express = require('express');
-var JSONData = require('./heroes.json');
-var fs = require("fs");
-var mysql =require('mysql2');   
-let Heroes= {}
+var fs = require('fs');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;   
+ 
+const contact = new Schema({
+   name: String,
+   phoneNo: String    
+});
+
+const MyModel = mongoose.model('contact', contact);
+let Heroes={}
+
+// get all heroes from the database
+
 Heroes.getAll = function(){
-  return new Promise (function (resolve , reject){
-    // create the connection to database
-   const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'ccs#1234',
-    database: 'heros'
-   });
-   let query='select * from comic where is_valid =1';
-   connection.query(query,function(err,result,fields){
-   	if (err) {
-   		console.log(err);
-   		console.log('ERR :: fetching data from database.');
-      reject();
-   	}
-   	else {
-   		//console.log(result);
-   		//console.log(fields);
-   	  resolve(result);
-   	}
-   });
-  }); 
+  return new Promise (function(resolve, reject){
+
+    //create the connection to database
+
+    const connection = mongoose.connect('mongodb://127.0.0.1:27017/myDB');
+    console.log(connection);
+    MyModel.find({},function(err,contact){
+       
+      if (err) {
+        console.log(err);
+        console.log('ERR :: fetching data from database.');
+        reject();
+      }
+      else {
+        console.log (contact);
+        resolve(contact);
+      }
+    });
+});
 }
-Heroes.saveNew = function(newHeroData){
-  return new Promise(function(resolve,reject){
-    const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'ccs#1234',
-    database: 'heros'
-   });
-   let query=`insert into comic(superhero,publisher,alter_ego,first_app,characters,is_valid,update_time) values('${newHeroData.superhero}','${newHeroData.publisher}','${newHeroData.alter_ego}','${newHeroData.first_app}','${newHeroData.characters}',1,'${new Date()}')`;
-   connection.query(query,function(err,result,fields){
-    if (err) {
-      console.log(err);
-      console.log('ERR :: fetching data from database.');
-      reject();
-    }
-    else {
-      //console.log(result);
-      //console.log(fields);
-      resolve(result);
-    }
-   });
-  });  
-}  
-Heroes.deleteRow = function(newHeroData){
-  return new Promise(function(resolve,reject){
-    const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'ccs#1234',
-    database: 'heros'
-   });
-   let query=`update comic set is_valid =0 where id= '${newHeroData.id}'`;
-    connection.query(query,function(err,result,fields){
-    if (err) {
-      console.log(err);
-      console.log('ERR :: fetching data from database.');
-      reject();
-    }
-    else {
-      //console.log(result);
-      //console.log(fields);
-      resolve(result);
-    }
-   });
-  });  
-}  
-Heroes.viewRow = function(newHeroData){
-  return new Promise(function(resolve,reject){
-    const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'ccs#1234',
-    database: 'heros'
-   });
-   let query=`select * from comic where id= '${newHeroData.id}'`;
-    connection.query(query,function(err,result,fields){
-    if (err) {
-      console.log(err);
-      console.log('ERR :: fetching data from database.');
-      reject();
-    }
-    else {
-      //console.log(result);
-      //console.log(fields);
-      resolve(result);
-    }
-   });
-  });  
-}  
-module.exports = Heroes;
+
+Heroes.updateData = function(updateData){
+    return new Promise (function(resolve,reject){
+
+        //create the connection to database
+
+        const connection = mongoose.connect('mongodb://127.0.0.1:27017/myDB');
+        console.log (connection);
+        MyModel.findOneAndUpdate({_id: `${updateData._id}`}, { name: `${updateData.name}` , phoneNo: `${updateData.phoneNo}`}, function(err, con) {
+          if (err) {
+                console.log(err);
+                console.log('ERR :: fetching data from database..');
+                reject();
+            }
+            else {
+                //console.log(result);
+                console.log('con.......'+ con);
+                resolve(con);
+
+            }
+        });
+});        
+    
+}
+
+Heroes.saveData = function(newContact){
+    return new Promise (function(resolve,reject){
+    
+        const connection = mongoose.connect('mongodb://127.0.0.1:27017/myDB');
+        console.log(connection);
+        var newCont = new MyModel({
+            name: `${newContact.name}`,
+            phoneNo: `${newContact.phoneNo}`
+        });
+        newCont.save({},function(err,contact){
+            if (err) {
+                console.log(err);
+                console.log('ERR :: Saving data into database..');
+                reject();
+            }
+            else {
+                console.log(contact);
+                resolve(contact);
+            }
+        });
+    });
+}
+
+Heroes.deleteRow = function(delContData){
+    return new Promise(function(resolve,reject){
+        const connection =mongoose.connect('mongodb://127.0.0.1:27017/myDB');
+        console.log(connection);
+        MyModel.findOneAndRemove({name : `${delContData.name}`}, function(err){
+            if (err) {
+                console.log(err);
+                console.log('ERR :: fetching data from database.');
+                reject();
+            }
+            else {      
+                console.log(contact);
+                resolve(contact);
+            }   
+        });
+    });  
+}
+
+Heroes.viewData = function(viewData){
+    return new Promise (function(resolve, reject){
+
+    //create the connection to database
+
+    const connection = mongoose.connect('mongodb://127.0.0.1:27017/myDB');
+    console.log(connection);
+    MyModel.find({_id : `${viewData._id}`},function(err,contact){
+       
+        if (err) {
+            console.log(err);
+            console.log('ERR :: fetching data from database.');
+            reject();
+        }
+        else {
+            console.log (contact);
+            resolve(contact);
+        }
+    });
+});
+}
+
+
+module.exports = Heroes
